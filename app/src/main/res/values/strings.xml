@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">WETP</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="checkin">Checkin</string>
+    <string name="menu_settings">Settings</string>
+    <string name="CongressKey">6f1d4995e366402498c86afec2b8f521</string>
+    <string name="title_activity_bills_detail">BillsDetailActivity</string>
+</resources>
