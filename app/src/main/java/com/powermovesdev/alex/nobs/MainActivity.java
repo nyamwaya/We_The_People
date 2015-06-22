@@ -1,6 +1,5 @@
 package com.powermovesdev.alex.nobs;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,6 +19,7 @@ import android.view.View;
 
 import com.powermovesdev.alex.nobs.Fragments.BillsListFragment;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

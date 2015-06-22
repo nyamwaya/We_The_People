@@ -1,19 +1,20 @@
 package com.powermovesdev.alex.nobs.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.powermovesdev.alex.nobs.API.Models.Congress;
-import com.powermovesdev.alex.nobs.API.Pojo.Bills;
+import com.powermovesdev.alex.nobs.BillsDetailActivity;
 import com.powermovesdev.alex.nobs.Fragments.BillsListFragment;
 import com.powermovesdev.alex.nobs.R;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 
@@ -23,10 +24,14 @@ import java.util.List;
 public class BillsAdapter extends RecyclerView.Adapter<BillsAdapter.ViewHolder> {
 
     List<Congress.Result> congressList;
+
     public BillsListFragment context;
     private String TAG = getClass().getSimpleName();
-    public Context cOntext;
+
+
+
     public String RepsPictures = "https://theunitedstates.io/images/congress/";
+
 
     public BillsAdapter(BillsListFragment context) {
         this.context = context;
@@ -49,9 +54,31 @@ public class BillsAdapter extends RecyclerView.Adapter<BillsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(BillsAdapter.ViewHolder holder, int position) {
         Congress.Result congress = congressList.get(position);
-        holder.SponserFN.setText(congress.sponsor.firstName);
-        Log.v(TAG, "First Name" + congress.sponsor.firstName);
+        holder.SponserFN.setText(congress.sponsor.firstName
+                + " " + congress.sponsor.lastName
+                + "(" + congress.sponsor.title + ")");
 
+
+
+        //To see if data is being received
+        Log.v(TAG, "First Name" + congress.sponsor.firstName);
+        //A short description of the Bill
+        holder.official_title.setText(congress.officialTitle);
+
+        //On click listner  for the whole card
+        holder.mView.setOnClickListener(view -> {
+            Context context1 = view.getContext();
+
+            Intent intent = new Intent(context1, BillsDetailActivity.class);
+            intent.putExtra("id",congress.sponsorId);
+            intent.putExtra("first_name",congress.sponsor.firstName);
+            intent.putExtra("last_name",congress.sponsor.lastName);
+
+           /* intent.putExtra(BillsDetailActivity.REP_NAME);*/
+
+            context1.startActivity(intent);
+
+        });
 
 
     }
@@ -68,13 +95,20 @@ public class BillsAdapter extends RecyclerView.Adapter<BillsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView SponserFN;
+        TextView official_title;
+        public final View mView;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            mView = itemView;
             SponserFN = (TextView) itemView.findViewById(R.id.person_name);
+            official_title = (TextView) itemView.findViewById(R.id.official_title);
+
 
         }
+
     }
+
 }

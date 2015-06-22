@@ -50,6 +50,7 @@ public class BillsListFragment extends Fragment {
         mRecyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_bills_list, container, false);
 
+
         requestBills();
 
         return mRecyclerView;
