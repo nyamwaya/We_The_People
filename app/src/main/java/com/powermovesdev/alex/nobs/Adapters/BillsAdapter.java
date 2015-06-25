@@ -73,6 +73,7 @@ public class BillsAdapter extends RecyclerView.Adapter<BillsAdapter.ViewHolder> 
             intent.putExtra("id",congress.sponsorId);
             intent.putExtra("first_name",congress.sponsor.firstName);
             intent.putExtra("last_name",congress.sponsor.lastName);
+            intent.putExtra("number", congress.number.toString());
 
            /* intent.putExtra(BillsDetailActivity.REP_NAME);*/
 

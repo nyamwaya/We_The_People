@@ -11,6 +11,7 @@ import java.util.List;
  * Created by alex on 6/12/15.
  */
 public class Congress {
+
     @Expose
     public List<Result> results = new ArrayList<Result>();
     @Expose

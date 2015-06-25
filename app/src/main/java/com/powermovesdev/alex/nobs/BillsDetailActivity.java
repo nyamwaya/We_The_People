@@ -5,44 +5,103 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.powermovesdev.alex.nobs.API.BillsDetailsClient;
+import com.powermovesdev.alex.nobs.API.Models.Bill_Detail;
 import com.powermovesdev.alex.nobs.API.Models.Congress;
+import com.powermovesdev.alex.nobs.Adapters.Detailed_Bills_Adapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class BillsDetailActivity extends AppCompatActivity {
 
 
-    public static final String REP_NAME = "cheese_name";
     public String BACK_DROP_URL = "https://theunitedstates.io/images/congress/";
+
+    private String TAG = getClass().getSimpleName();
+
+    public int position;
+    public Detailed_Bills_Adapter mDetailedAdapter;
+    public RecyclerView mRecyclerView;
+
+    List<Bill_Detail> bill_details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bills_detail);
 
-        //Passing Representative's name
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
 
 
-        //Trying to pass one to the next
-
-
+        returnBillsData();
         materialDesign();
         loadBackdrop();
 
 
     }
 
+    public void returnBillsData(){
+
+        String number = getIntent().getStringExtra("number");
+
+
+
+            BillsDetailsClient billsDetailsClient = new BillsDetailsClient(this);
+            Observable<Bill_Detail> billDetailObservable = billsDetailsClient.getBillDetails(number);
+
+            billDetailObservable.observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(bill_detail -> {
+                        mDetailedAdapter = new Detailed_Bills_Adapter(this, bill_details);
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                        mRecyclerView.setAdapter(mDetailedAdapter);
+
+                        bill_detail = bill_details.get(position);
+                        Log.v(TAG, "Getting current Data");
+
+                    }, throwable -> {
+
+                    });
+
+
+
+
+
+
+
+    }
+
+
+
+   /* public void displayData(List<Bill_Detail> bill_details, int position){
+        TextView info_ = (TextView) findViewById(R.id.info_);
+
+        info_.setText(bill_details.get(position).titleWithoutNumber);
+
+
+
+
+    }*/
+
     public void materialDesign() {
-        String firstName = getIntent().getStringExtra("first_name");
-        String lastname = getIntent().getStringExtra("last_name");
+        //String firstName = getIntent().getStringExtra("first_name");
+        //String lastname = getIntent().getStringExtra("last_name");
 
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,11 +110,11 @@ public class BillsDetailActivity extends AppCompatActivity {
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        if (firstName != null && !firstName.equalsIgnoreCase("") || lastname != null && lastname.equalsIgnoreCase("")) {
+        /*if (firstName != null && !firstName.equalsIgnoreCase("") || lastname != null && lastname.equalsIgnoreCase("")) {
 
             collapsingToolbar.setTitle(firstName + "" + lastname);
 
-        }
+        }*/
 
 
     }
